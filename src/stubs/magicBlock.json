@@ -1,0 +1,283 @@
+[
+    {
+      "useCase": "This is basically pushing the value into an array - customer.history is an array and we are pushing the value of the request into it. The challenge here is that we are also using the value of the customer.name, timeSent and request which has to be replaced with the actual value of the variables which is done during the execution of the node",
+      "variables": {
+        "customer": { "history": [] },
+        "request": "some request",
+        "timeSent": "2024-04-15",
+        "name": "John Doe"
+      },
+      "formula": {
+        "merge": [
+          { "var": "customer.history" },
+          "Messaggio precedente inviato da  {{customer.name}} il {{timeSent}} {{request}}"
+        ]
+      },
+      "expectedOutput": {
+        "customer": {
+          "history": [
+            "Messaggio precedente inviato da John Doe il 2024-04-15 some request"
+          ]
+        }
+      }
+    },
+    {
+      "useCase": "log volantino - here we are taking the value of extractedFlyers and taking the log of it and saving it to volantino",
+      "variables": {
+        "extractedFlyers": [
+          {
+            "end_date": "2024-04-28",
+            "image_url": "https://it-it-media.shopfully.cloud/images/volantini/1160631@3x.jpg",
+            "id": "1160631",
+            "title": "Speciale Gastronomia",
+            "start_date": "2024-04-15"
+          },
+          {
+            "end_date": "2024-04-28",
+            "image_url": "https://it-it-media.shopfully.cloud/images/volantini/1160629@3x.jpg",
+            "id": "1160629",
+            "title": "Zona - Convenienza Quotidiana",
+            "start_date": "2024-04-15"
+          }
+        ]
+      },
+      "formula": { "log": [{ "var": "extractedFlyers" }] },
+      "expectedOutput": {
+        "volantino": [
+          {
+            "end_date": "2024-04-28",
+            "image_url": "https://it-it-media.shopfully.cloud/images/volantini/1160631@3x.jpg",
+            "id": "1160631",
+            "title": "Speciale Gastronomia",
+            "start_date": "2024-04-15"
+          },
+          {
+            "end_date": "2024-04-28",
+            "image_url": "https://it-it-media.shopfully.cloud/images/volantini/1160629@3x.jpg",
+            "id": "1160629",
+            "title": "Zona - Convenienza Quotidiana",
+            "start_date": "2024-04-15"
+          }
+        ]
+      }
+    },
+    {
+      "useCase": "Simple example of log. Here we want to log the value of customer.gdpr as YES. By default in this particular flow the value of customer.gdpr is NO. So we are changing it to YES by using the log function",
+      "formula": { "log": "YES" },
+      "variables": { "customer": { "gdpr": "NO" } },
+      "expectedOutput": { "customer": { "gdpr": "YES" } }
+    },
+    {
+      "useCase": "check is the user is coming in for the first time. This is done by checking if the customer.gdpr is not equal to YES which means that the user is coming in for the first time",
+      "formula": { "!=": [{ "var": "customer.gdpr" }, "YES"] },
+      "variables": {
+        "customer": {
+          "gdpr": "YES"
+        }
+      },
+      "expectedOutput": true
+    },
+    {
+      "useCase": "Check if the customer has preferred store. We are setting value of customer.store when the customer selects a preferred store to 1234 and checking if the customer has a preferred store by checking if the value of customer.store.id_store is not null or undefined. If it is null or undefined then the output will be false",
+      "formula": { "!!": [{ "var": "customer.store.id_store" }] },
+      "variables": {
+        "customer": {
+          "store": {
+            "id_store": "1234"
+          }
+        }
+      },
+      "expectedOutput": true
+    },
+    {
+      "useCase": "To obtain the opening morning hours of the store based on the day of the week. Here we are using the date.weekday function which is a custom function added using To be noted (dayjs package is used here) - jsonLogic.add_operation('date.weekday', (format: string, timezone: string) => {return dayjs(new Date().toString()).tz(timezones.filter((tz) => tz.text === timezone)[0].utc[0]).format(format)}). And also (UTC+01:00) Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna - refers to CET timezone    ",
+      "formula": {
+        "var": {
+          "cat": [
+            "customer.store.hour_",
+            {
+              "toLowerCase": [
+                {
+                  "date.weekday": [
+                    "ddd",
+                    "(UTC+01:00) Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna"
+                  ]
+                }
+              ]
+            },
+            "_morning"
+          ]
+        }
+      },
+      "variables": {
+        "store": {
+          "whatsapp": "917795693332",
+          "hour_sun_morning": "09:00-13:00",
+          "franchise": "Bricoio",
+          "hour_wed_afternoon": "16:45-23:45",
+          "code": "0000",
+          "is_visible_on_map": "true",
+          "hour_sat_morning": "08:30-20:00",
+          "city": "Test city",
+          "hour_wed_morning": "08:30-16:00",
+          "latitude": "",
+          "description": "",
+          "zip_code": "00000",
+          "province": "ZZZZZ",
+          "hour_mon_morning": "03:30-12:00",
+          "hour_mon_afternoon": "13:00-23:50",
+          "hour_tue_afternoon": "14:00-20:00",
+          "hour_thu_afternoon": "12:10-20:00",
+          "province_extended": "",
+          "alias": "TEST STORE",
+          "hour_sun_afternoon": "15:00-19:30",
+          "street1": "Via Test",
+          "is_partner": "false",
+          "street2": "",
+          "hour_tue_morning": "01:00-13:00",
+          "email": "",
+          "longitude": "",
+          "hour_fri_morning": "01:30-13:30",
+          "is_active": "true",
+          "is_pickup_point": "true",
+          "hour_thu_morning": "08:30-11:00",
+          "id_country": "IT",
+          "company_name": "Brico io S.p.A.",
+          "hour_sat_afternoon": "",
+          "location": { "lon": 0, "lat": 0 },
+          "phone_number": "0201234567",
+          "hour_fri_afternoon": "14:00-20:00"
+        }
+      },
+      "expectedOutput": "08:30-16:00"
+    },
+    {
+      "useCase": "here we assume we have the morning hours range and noon hours range and we want to check if the current time is within the morning hours range or noon hours range. This is done by using the date.now function which is a custom function added using To be noted (dayjs package is used here) - jsonLogic.add_operation('date.now', (format: string, timezone: string) => {return dayjs(new Date().toString()).tz(timezones.filter((tz) => tz.text === timezone)[0].utc[0]).format(format)}). And also (UTC+01:00) Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna - refers to CET timezone    ",
+      "variables": {
+        "morning_hours_range": ["08:30", "16:00"],
+        "noon_hours_range": ["12:00", "14:00"]
+      },
+      "formula": {
+        "or": [
+          {
+            "<=": [
+              { "var": "morning_hours_range.0" },
+              {
+                "date.now": [
+                  "HH:mm",
+                  "(UTC+01:00) Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna"
+                ]
+              },
+              { "var": "morning_hours_range.1" }
+            ]
+          },
+          {
+            "<=": [
+              { "var": "noon_hours_range.0" },
+              {
+                "date.now": [
+                  "HH:mm",
+                  "(UTC+01:00) Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna"
+                ]
+              },
+              { "var": "noon_hours_range.1" }
+            ]
+          }
+        ]
+      },
+      "expectedOutput": true
+    },
+    {
+      "useCase": "Here we are getting the  length of the storesFiltered array. The value of storesFiltered is an array of stores and we are getting the length of the array. In the later scenario we deviate the flow based on the length of the storesFiltered array",
+      "formula": {
+        "reduce": [
+          { "var": "storesFiltered" },
+          { "+": [{ "var": "accumulator" }, 1] },
+          0
+        ]
+      },
+      "variables": {
+        "storesFiltered": [
+          {
+            "whatsapp": "917795693332",
+            "hour_sun_morning": "09:00-13:00",
+            "franchise": "Bricoio",
+            "hour_wed_afternoon": "16:45-20:00",
+            "code": "0000",
+            "is_visible_on_map": "true",
+            "hour_sat_morning": "08:30-20:00",
+            "city": "Test city",
+            "hour_wed_morning": "08:30-16:00",
+            "latitude": "",
+            "description": "",
+            "zip_code": "00000",
+            "province": "ZZZZZ",
+            "hour_mon_morning": "03:30-12:00",
+            "hour_mon_afternoon": "13:00-23:50",
+            "hour_tue_afternoon": "14:00-20:00",
+            "hour_thu_afternoon": "12:10-20:00",
+            "province_extended": "",
+            "alias": "TEST STORE",
+            "hour_sun_afternoon": "15:00-19:30",
+            "street1": "Via Test",
+            "is_partner": "false",
+            "street2": "",
+            "hour_tue_morning": "01:00-13:00",
+            "email": "",
+            "longitude": "",
+            "hour_fri_morning": "01:30-13:30",
+            "is_active": "true",
+            "is_pickup_point": "true",
+            "hour_thu_morning": "08:30-11:00",
+            "id_country": "IT",
+            "company_name": "Brico io S.p.A.",
+            "hour_sat_afternoon": "",
+            "location": { "lon": 0, "lat": 0 },
+            "phone_number": "0201234567",
+            "hour_fri_afternoon": "14:00-20:00"
+          },
+          {
+            "whatsapp": "919845547497",
+            "hour_sun_morning": "09:00-13:00",
+            "franchise": "Bricoio",
+            "hour_wed_afternoon": "21:01-22:30",
+            "code": "10000",
+            "is_visible_on_map": "true",
+            "hour_sat_morning": "08:30-20:00",
+            "city": "Test city",
+            "hour_wed_morning": "08:30-21:00",
+            "latitude": "",
+            "description": "",
+            "zip_code": "00000",
+            "province": "ZZZZZ",
+            "hour_mon_morning": "08:30-12:00",
+            "hour_mon_afternoon": "13:00-23:50",
+            "hour_tue_afternoon": "14:00-20:00",
+            "hour_thu_afternoon": "12:10-23:00",
+            "province_extended": "",
+            "alias": "TEST STORE 2",
+            "hour_sun_afternoon": "15:00-19:30",
+            "street1": "Via Test",
+            "is_partner": "false",
+            "street2": "",
+            "hour_tue_morning": "01:00-13:00",
+            "email": "",
+            "longitude": "",
+            "hour_fri_morning": "01:30-08:10",
+            "is_active": "true",
+            "is_pickup_point": "true",
+            "hour_thu_morning": "08:30-11:00",
+            "id_country": "IT",
+            "company_name": "Brico io S.p.A.",
+            "hour_sat_afternoon": "",
+            "location": { "lon": 0, "lat": 0 },
+            "phone_number": "0201234567",
+            "hour_fri_afternoon": "08:22-20:00"
+          }
+        ]
+      },
+  
+      "expectedOutput": 2
+    }
+  ]
+  

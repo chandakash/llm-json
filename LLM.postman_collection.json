@@ -1,0 +1,66 @@
+{
+	"info": {
+		"_postman_id": "7b7820eb-d58f-4bdf-9fb2-833ba7e06c5c",
+		"name": "LLM",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "14000540"
+	},
+	"item": [
+		{
+			"name": "simple-chat",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"question\": \"Does city has value equal to khatima and name containing akash\",\n  \"session_variables\": {\n    \"name\": \"Akash Chand\",\n    \"ages\": [\n      1,\n      2,\n      4,\n      5\n    ],\n    \"address\": {\n      \"city\": \"khatima\"\n    }\n  },\n  \"sessionId\": \"akash5\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/simpel-chat",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"simpel-chat"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "multi-chain-chat",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"question\": \"Does city has value equal to khatima and name containing akash\",\n  \"session_variables\": {\n    \"name\": \"Akash Chand\",\n    \"ages\": [\n      1,\n      2,\n      4,\n      5\n    ],\n    \"address\": {\n      \"city\": \"khatima\"\n    }\n  },\n  \"sessionId\": \"akash5\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/multi-chain-chat",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"multi-chain-chat"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
