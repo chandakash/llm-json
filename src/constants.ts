@@ -1,5 +1,57 @@
 export const Constants = {
-    LANGSMITH_API_KEY: "<Repace with LANGSMITH_API_KEY value>",
-    LANGSMITH_TRACING_V2: "true",
-    LANGSMITH_ENDPOINT: "https://api.smith.langchain.com",
-}
+  LANGSMITH_API_KEY: "<Repace with LANGSMITH_API_KEY value>",
+  LANGSMITH_TRACING_V2: 'true',
+  LANGSMITH_ENDPOINT: 'https://api.smith.langchain.com',
+};
+
+export const supported_operations = [
+  'var',
+  'missing',
+  'missing_some',
+  'if',
+  '==',
+  '===',
+  '!=',
+  '!==',
+  '!',
+  '!!',
+  'or',
+  'and',
+  '>',
+  '>=',
+  '<',
+  '<=',
+  'Between',
+  'max',
+  'min',
+  '+',
+  '-',
+  '*',
+  '/',
+  '%',
+  'concat',
+  'substring',
+  'cat',
+  'substr',
+  'map',
+  'filter',
+  'reduce',
+  'all',
+  'some',
+  'none',
+  'merge',
+  'in',
+  'log',
+];
+
+export const explainExample = {
+  formula: {
+    var: ['a'],
+  },
+  session_variables: {
+    a: 1,
+    b: 2,
+  },
+  output: 1,
+  description: 'What is the value of variable a?',
+};

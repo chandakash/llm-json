@@ -5,66 +5,15 @@ import {
 } from '@langchain/core/prompts';
 import { StringOutputParser } from '@langchain/core/output_parsers';
 import { traceable } from 'langsmith/traceable';
-import { Constants } from 'src/constants';
+import { Constants, explainExample, supported_operations } from 'src/constants';
 process.env['LANGCHAIN_TRACING_V2'] = Constants.LANGSMITH_TRACING_V2;
 process.env['LANGCHAIN_ENDPOINT'] = Constants.LANGSMITH_ENDPOINT;
 process.env['LANGCHAIN_API_KEY'] = Constants.LANGSMITH_API_KEY; // Not able to use env for this
 import { RunnableWithMessageHistory } from '@langchain/core/runnables';
 import { RedisChatMessageHistory } from '@langchain/community/stores/message/ioredis';
 import { inputRules } from '../stubs/inputRules';
-import { createClient as redisCreateClient} from "redis";
+import { createClient as redisCreateClient } from 'redis';
 
-
-const supported_operations = [
-  'var',
-  'missing',
-  'missing_some',
-  'if',
-  '==',
-  '===',
-  '!=',
-  '!==',
-  '!',
-  '!!',
-  'or',
-  'and',
-  '>',
-  '>=',
-  '<',
-  '<=',
-  'Between',
-  'max',
-  'min',
-  '+',
-  '-',
-  '*',
-  '/',
-  '%',
-  'concat',
-  'substring',
-  'cat',
-  'substr',
-  'map',
-  'filter',
-  'reduce',
-  'all',
-  'some',
-  'none',
-  'merge',
-  'in',
-  'log',
-];
-const explainExample = {
-  formula: {
-    var: ['a'],
-  },
-  session_variables: {
-    a: 1,
-    b: 2,
-  },
-  output: 1,
-  description: 'What is the value of variable a?',
-};
 const ANSWER_PROMPT = ChatPromptTemplate.fromMessages([
   [
     'system',
@@ -91,16 +40,15 @@ const ANSWER_PROMPT = ChatPromptTemplate.fromMessages([
 ]);
 
 const nestedTrace = traceable(
-
   async (question: any, session_variables: any, sessionId: any) => {
     const redisClient = redisCreateClient({
-        url: process.env["REDIS_URL"] ?? "redis://localhost:6379",
+      url: process.env['REDIS_URL'] ?? 'redis://localhost:6379',
     });
     const model = new ChatOpenAI({
-    // modelName: 'gpt-4',
-    modelName: 'gpt-3.5-turbo-0125',
-    temperature: 0.7,
-    openAIApiKey: process.env["OPENAI_API_KEY"],
+      // modelName: 'gpt-4',
+      modelName: 'gpt-3.5-turbo-0125',
+      temperature: 0.7,
+      openAIApiKey: process.env['OPENAI_API_KEY'],
     });
     await redisClient.connect();
     console.log('redis connection established');

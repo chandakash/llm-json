@@ -17,4 +17,10 @@ export class AppController {
     const { question, session_variables, sessionId } = body;
     return this.appService.chatJsonLogic(question, session_variables, sessionId);
   }
+
+  @Post("/multi-chain-chat")
+  async chatWithMultiChainJsonLogic( @Body() body: ChatRequestBody) {
+    const { question, session_variables, sessionId } = body;
+    return this.appService.chatWithMultiChainJsonLogic(question, session_variables, sessionId);
+  }
 }
